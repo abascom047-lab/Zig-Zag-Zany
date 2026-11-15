@@ -15,8 +15,9 @@ namespace Assets.Scripts.Movement {
 		private bool _forwardPressed = false;
 		private bool _backwardPressed = false;
 
-		private const float SPEED_INCREMENT = 0.25f;
-		private const float HIGH_SPEED = 10f;
+		private const float SPEED_INCREMENT = 5f;
+		private const float SPEED_DECREMENT = 15f;
+		private const float HIGH_SPEED = 40f;
 
 		void Awake() {
 			_gameInputActions = new GameInputActions();
@@ -46,11 +47,12 @@ namespace Assets.Scripts.Movement {
 			} else if (_backwardPressed) {
 				_speed = Mathf.Max(_speed - SPEED_INCREMENT * GameTime.Current, -HIGH_SPEED);
 			} else {
-				_speed = Mathf.MoveTowards(_speed, 0f, SPEED_INCREMENT * GameTime.Current);
+				_speed = Mathf.MoveTowards(_speed, 0f, SPEED_DECREMENT * GameTime.Current);
 			}
 
 			if (_speed != 0) {
-				_t = Mathf.Clamp(_t + _speed * GameTime.Current, 0f, 1f);
+				float percentage = _speed / spline.CalculateLength();
+				_t = Mathf.Clamp(_t + percentage * GameTime.Current, 0f, 1f);
 
 				Vector3 position = spline.EvaluatePosition(_t);
 				Vector3 tangent = spline.EvaluateTangent(_t);
