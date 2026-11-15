@@ -9,17 +9,19 @@ namespace Assets.Scripts.Movement {
 
 		private GameInputActions _gameInputActions;
 
+		private float _splineLength = 0;
 		private float _speed = 0;
 		private float _t = 0;
 
 		private bool _forwardPressed = false;
 		private bool _backwardPressed = false;
 
-		private const float SPEED_INCREMENT = 5f;
+		private const float SPEED_INCREMENT = 7.5f;
 		private const float SPEED_DECREMENT = 15f;
 		private const float HIGH_SPEED = 40f;
 
 		void Awake() {
+			_splineLength = spline.CalculateLength();
 			_gameInputActions = new GameInputActions();
 		}
 
@@ -51,7 +53,7 @@ namespace Assets.Scripts.Movement {
 			}
 
 			if (_speed != 0) {
-				float percentage = _speed / spline.CalculateLength();
+				float percentage = _speed / _splineLength;
 				_t = Mathf.Clamp(_t + percentage * GameTime.Current, 0f, 1f);
 
 				Vector3 position = spline.EvaluatePosition(_t);
@@ -63,9 +65,6 @@ namespace Assets.Scripts.Movement {
 		}
 
 		private void OnForwardPerformed(InputAction.CallbackContext context) {
-			if (_backwardPressed)
-				return;
-
 			_forwardPressed = true;
 		}
 
@@ -74,9 +73,6 @@ namespace Assets.Scripts.Movement {
 		}
 
 		private void OnBackwardPerformed(InputAction.CallbackContext context) {
-			if (_forwardPressed)
-				return;
-
 			_backwardPressed = true;
 		}
 
