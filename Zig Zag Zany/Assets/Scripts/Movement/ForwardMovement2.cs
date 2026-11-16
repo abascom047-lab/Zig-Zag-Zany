@@ -10,8 +10,8 @@ namespace Assets.Scripts.Movement {
 		private bool _forwardPressed = false;
 		private bool _backwardPressed = false;
 
-		private const float SPEED_INCREMENT = 0.1f;
-		private const float SPEED_DECREMENT = 0.5f;
+		private const float SPEED_INCREMENT = 0.25f;
+		private const float SPEED_DECREMENT = 0.75f;
 		private const float HIGH_SPEED = 10f;
 
 		public void Enable(GameInputActions gameInputActions) {

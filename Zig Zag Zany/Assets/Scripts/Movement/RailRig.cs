@@ -20,7 +20,7 @@ namespace Assets.Scripts.Movement {
 			SplineUtility.GetNearestPoint(_spline.Spline, localPosition, out float3 nearestPoint, out float t);
 
 			Progress = t;
-			Center = nearestPoint;
+			Center = _spline.EvaluatePosition(Progress);
 			Forward = _spline.EvaluateTangent(Progress);
 			Right = Vector3.Cross(Vector3.up, Forward).normalized;
 		}
