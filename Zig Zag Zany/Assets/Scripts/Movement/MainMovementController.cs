@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
+﻿using Unity.Mathematics;
+using UnityEngine;
 using UnityEngine.Splines;
 
 namespace Assets.Scripts.Movement {
@@ -7,13 +7,15 @@ namespace Assets.Scripts.Movement {
 		public CharacterController CharControl;
 		public SplineContainer Spline;
 
-		private ForwardMovement _forwardMovement;
-		private HorizontalMovement _horizontalMovement;
+		private RailRig _rig;
+		private ForwardMovement2 _forwardMovement;
+		private HorizontalMovement2 _horizontalMovement;
 		private GameInputActions _gameInputActions;
 
 		void Awake() {
-			_forwardMovement = new ForwardMovement(Spline);
-			_horizontalMovement = new HorizontalMovement();
+			_rig = new RailRig(Spline);
+			_forwardMovement = new ForwardMovement2();
+			_horizontalMovement = new HorizontalMovement2();
 			_gameInputActions = new GameInputActions();
 		}
 
@@ -28,17 +30,14 @@ namespace Assets.Scripts.Movement {
 		}
 
 		void Update() {
+			_rig.Update(CharControl.transform.position);
 			_forwardMovement.Update();
-			_horizontalMovement.Update(_gameInputActions);
 
-			Vector3 targetPosition = _forwardMovement.Center + _forwardMovement.Right * _horizontalMovement.Offset;
+			Vector3 forward = _forwardMovement.GetMovement(_rig);
+			Vector3 right = _horizontalMovement.GetMovement(_gameInputActions, _rig);
 
-			if (CharControl.transform.position != targetPosition) {
-				Vector3 direction = targetPosition - CharControl.transform.position;
-				
-				CharControl.Move(direction);
-				CharControl.transform.rotation = Quaternion.LookRotation(_forwardMovement.Tangent);
-			}
+			CharControl.Move(forward + right);
+			CharControl.transform.rotation = Quaternion.LookRotation(_rig.Forward);
 		}
 	}
 }
