@@ -31,11 +31,13 @@ namespace Assets.Scripts.Movement {
 			_forwardMovement.Update();
 			_horizontalMovement.Update(_gameInputActions);
 
-			Vector3 targetPosition = _forwardMovement.Center + _forwardMovement.Right * _horizontalMovement.Movement;
+			Vector3 targetPosition = _forwardMovement.Center + _forwardMovement.Right * _horizontalMovement.Offset;
 
 			if (CharControl.transform.position != targetPosition) {
 				Vector3 direction = targetPosition - CharControl.transform.position;
+				
 				CharControl.Move(direction);
+				CharControl.transform.rotation = Quaternion.LookRotation(_forwardMovement.Tangent);
 			}
 		}
 	}

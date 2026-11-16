@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Movement {
 	public class HorizontalMovement {
-		public float Movement { get; private set; }
+		public float Offset { get; private set; }
 
 		private const float SPEED = 10.0f;
 
@@ -11,7 +11,7 @@ namespace Assets.Scripts.Movement {
 			if (inputAxis == 0)
 				return;
 
-			Movement = inputAxis * SPEED * GameTime.Current;
+			Offset += inputAxis * SPEED * GameTime.Current;
 		}
 	}
 }
