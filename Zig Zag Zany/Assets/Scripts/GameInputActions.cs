@@ -109,6 +109,15 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Horizontal"",
+                    ""type"": ""Value"",
+                    ""id"": ""a0eaebb4-aa35-4582-af4c-aba499c1582b"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -133,6 +142,39 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Backward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""53f7ec54-f4e5-412f-a200-e74371fbeba4"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""8309b388-da7f-45b6-a23d-da9d21e1f833"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""ac82670f-b70f-4a70-bfda-9aea6e627f04"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -143,6 +185,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Forward = m_Movement.FindAction("Forward", throwIfNotFound: true);
         m_Movement_Backward = m_Movement.FindAction("Backward", throwIfNotFound: true);
+        m_Movement_Horizontal = m_Movement.FindAction("Horizontal", throwIfNotFound: true);
     }
 
     ~@GameInputActions()
@@ -225,6 +268,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
     private readonly InputAction m_Movement_Forward;
     private readonly InputAction m_Movement_Backward;
+    private readonly InputAction m_Movement_Horizontal;
     /// <summary>
     /// Provides access to input actions defined in input action map "Movement".
     /// </summary>
@@ -244,6 +288,10 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Movement/Backward".
         /// </summary>
         public InputAction @Backward => m_Wrapper.m_Movement_Backward;
+        /// <summary>
+        /// Provides access to the underlying input action "Movement/Horizontal".
+        /// </summary>
+        public InputAction @Horizontal => m_Wrapper.m_Movement_Horizontal;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -276,6 +324,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @Backward.started += instance.OnBackward;
             @Backward.performed += instance.OnBackward;
             @Backward.canceled += instance.OnBackward;
+            @Horizontal.started += instance.OnHorizontal;
+            @Horizontal.performed += instance.OnHorizontal;
+            @Horizontal.canceled += instance.OnHorizontal;
         }
 
         /// <summary>
@@ -293,6 +344,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @Backward.started -= instance.OnBackward;
             @Backward.performed -= instance.OnBackward;
             @Backward.canceled -= instance.OnBackward;
+            @Horizontal.started -= instance.OnHorizontal;
+            @Horizontal.performed -= instance.OnHorizontal;
+            @Horizontal.canceled -= instance.OnHorizontal;
         }
 
         /// <summary>
@@ -347,5 +401,12 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBackward(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Horizontal" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHorizontal(InputAction.CallbackContext context);
     }
 }
